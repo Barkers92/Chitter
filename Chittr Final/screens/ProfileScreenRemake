@@ -1,0 +1,205 @@
+import React, { Component } from 'react';
+import { Text, View, TextInput, FlatList,Alert, StyleSheet, Button, ActivityIndicator } from 'react-native';
+class ProfileScreenRemake extends Component{
+ 
+ 
+ 	constructor(props){
+	super(props);
+	this.state ={
+		isLoading:true,
+		userListData:[],
+		chit: ""
+	}
+}
+
+getData(){
+	return fetch('http://10.0.2.2:3333/api/v0.0.5/chits')
+	.then((response)=>response.json())
+	.then((responseJson)=> {
+		
+		this.setState({
+			isLoading:false,
+			userListData:responseJson,
+		});
+		
+	})
+	.catch((error)=>{
+		console.log(error);
+	});
+}
+
+componentDidMount(){
+	this.getData();
+}
+ 
+
+  render() {
+	  
+	  if(this.state.isLoading){
+		  return(
+		  <View>
+		  <ActivityIndicator/>
+		  </View>
+		  )
+	  }
+	  
+    return (
+      <View style = {styles.container}>
+		<View style = {styles.yellowView}>
+		  
+		  <Button style = {styles.logout}
+				title="logout"
+				onPress={this.Logout}		
+			/>
+			<TextInput
+				placeholder="Post Chit"
+				onChangeText={(chit) => this.setState({chit})}
+				value={this.state.chit}
+			/>
+		  <Button style = {styles.logout}
+				title="Post Chit"
+				onPress={this.PostChit}
+			/>
+			
+			<Text style = {styles.textCentre}>List of chits</Text>
+		</View>
+		
+		<View style = {styles.redView}>
+			<FlatList style = {styles.flatList}
+			data={this.state.userListData}
+			renderItem={({item})=><Text>{item.chit_content}</Text>}
+			keyExtractor={({id},index)=>id}
+			/>
+		</View>
+	  </View>
+    )
+  }
+
+
+Logout = () => {
+	return fetch("http://10.0.2.2:3333/api/v0.0.5/logout",
+	{
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-Authorization': key
+		},
+	})
+		.then((response) => {
+			Alert.alert("Logout");
+		})
+
+		.catch((error) => {
+			console.error(error);
+			Alert("incorrect Logout");
+		});
+	}
+
+PostChit = () => {
+	return fetch("http://10.0.2.2:3333/api/v0.0.5/chits",
+	{
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-Authorization': key
+		},
+		body: JSON.stringify({
+			chit_id: 0,
+			timestamp: 0,
+			chit_content: this.state.chit,
+			location: {
+				longitude: 0,
+				latitude: 0
+			},
+			user: {
+			user_id: user_id,
+			given_name: this.state.given_name,
+			family_name: this.state.family_name,
+			email: this.state.email
+			}
+		})
+	})
+		.then((response) => {
+			Alert.alert("chitted");
+		})
+		.catch((error) => {
+			console.error(error);
+			Alert("incorrect Logout");
+		});
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const styles = StyleSheet.create({
+	logout: {
+		width: 10,
+		color: "green",
+	},
+	flatList: {
+		textAlign:"center",
+		backgroundColor: 'white',
+	},
+	container: {
+		flex:1,
+		alignItems: 'center',
+		backgroundColor:'blue',
+	},
+	yellowView: {
+		flex:.2,
+		flexDirection: 'column',
+		alignItems: 'stretch',
+		width:415,
+		backgroundColor:'green',
+	},
+	redView: {
+		flex:.0,
+		flexDirection: 'column',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		width:200,
+		backgroundColor:'red',
+	},
+	textCentre: {
+		textAlign:"center",
+		paddingTop:50
+	},
+	item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
+  },
+})
+
+
+export default ProfileScreenRemake;
