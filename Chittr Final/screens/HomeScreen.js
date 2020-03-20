@@ -17,21 +17,6 @@ class HomeScreen extends Component{
 />
 
  <Button
- title="User Profile"
- onPress={() => this.props.navigation.navigate('Profile')}
-/>
-
- <Button
- title="Search User"
- onPress={() => this.props.navigation.navigate('SearchUser')}
-/>
-
- <Button
- title="Search User profile"
- onPress={() => this.props.navigation.navigate('UserProfile')}
-/>
-
- <Button
  title="Designer page"
  onPress={() => this.props.navigation.navigate('Remake')}
 />

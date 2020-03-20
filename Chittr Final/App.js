@@ -15,11 +15,15 @@ import UserProfileScreen from './screens/UserProfileScreen'
 import SearchUserScreen from './screens/SearchUserScreen'
 import SearchedUserProfileScreen from './screens/SearchedUserProfileScreen'
 import ProfileScreenRemake from './screens/ProfileScreenRemake'
+import PostChitScreen from './screens/PostChitScreen'
 
 
 const AppStackNav = createStackNavigator({
  Home: {
 	screen: HomeScreen
+ },
+ PostChit: {
+	 screen: PostChitScreen
  },
  Login: {
 	screen: LoginScreen
